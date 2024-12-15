@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "personal_data")
 data class PersonalDataEntity(
-    @PrimaryKey val id: Int,
+
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
 
     val username: String,
     val age: String,

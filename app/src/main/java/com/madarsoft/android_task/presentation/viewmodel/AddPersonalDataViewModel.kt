@@ -3,7 +3,7 @@ package com.madarsoft.android_task.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.madarsoft.android_task.data.local.entity.PersonalDataEntity
+import com.madarsoft.android_task.domain.model.PersonalData
 import com.madarsoft.android_task.domain.usecase.FetchPersonalDatUseCase
 import com.madarsoft.android_task.domain.usecase.InsertPersonalDataUseCase
 import com.madarsoft.android_task.presentation.base.BaseViewModel
@@ -11,7 +11,6 @@ import com.madarsoft.android_task.util.DataState
 import com.madarsoft.android_task.util.LoadingErrorState
 import com.telda.movieApp.domain.model.CustomError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,18 +21,26 @@ class AddPersonalDataViewModel @Inject constructor(
     private val fetchPersonalDatUseCase: FetchPersonalDatUseCase
 ) : BaseViewModel() {
 
-    private val _personalData = MutableLiveData<DataState<PersonalDataEntity>>()
-    val personalData: LiveData<DataState<PersonalDataEntity>> = _personalData
-
+    private val _personalData = MutableLiveData<PersonalData>()
+    val personalData: LiveData<PersonalData> = _personalData
 
     fun addPersonalDataToDatabase(
-        personalDataEntity: PersonalDataEntity
+        username: String,
+        age: String,
+        jobTitle: String,
+        gender: String,
     ) {
         viewModelScope.launch {
-            delay(5000)
             try {
-                insertPersonalDataUseCase.addPersonalDataToDatabase(personalDataEntity)
-                // _personalData.postValue(DataState.Success(personalDataEntity))
+                val call = insertPersonalDataUseCase.addPersonalDataToDatabase(
+                    username,
+                    age,
+                    jobTitle,
+                    gender
+                )
+                call.collect {
+                    handleDataState(it)
+                }
             } catch (e: Exception) {
                 // Handle any exceptions and post the error message to _viewState
                 _viewState.postValue(LoadingErrorState.ShowError(CustomError(e.localizedMessage.toString())))
@@ -41,11 +48,11 @@ class AddPersonalDataViewModel @Inject constructor(
         }
     }
 
-    private fun handleDataState(dataState: DataState<PersonalDataEntity>) {
+    private fun handleDataState(dataState: DataState<PersonalData>) {
         when (dataState) {
             is DataState.Success -> {
                 // On success, update the LiveData with the grouped movies data
-                // _personalData.postValue(dataState.data)
+                _personalData.postValue(dataState.data)
             }
 
             is DataState.Error -> {
