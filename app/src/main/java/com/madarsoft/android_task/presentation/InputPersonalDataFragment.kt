@@ -21,11 +21,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class InputPersonalDataFragment : BaseFragment() {
 
+    // View Binding for accessing views in the layout
     private var _binding: FragmentInputPersonalDataBinding? = null
     private val binding get() = _binding!!
 
+    // ViewModel for adding personal data
     private val addPersonalDataViewModel: AddPersonalDataViewModel by viewModels()
 
+    // Variables to store user input
     private lateinit var username: String
     private lateinit var age: String
     private lateinit var jobTitle: String
@@ -35,6 +38,7 @@ class InputPersonalDataFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the layout and return the root view
         _binding = FragmentInputPersonalDataBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,12 +46,20 @@ class InputPersonalDataFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set up listeners for button clicks
         setupListeners()
+
+        // Observe LiveData from the ViewModel
         setupObservers()
     }
 
+    /**
+     * Sets up click listeners for views
+     */
     private fun setupListeners() {
+        // Handle submit button click with debounced listener to prevent rapid clicks
         binding.btnSubmit.onDebouncedListener {
+            // Validate input and add personal data to the database if valid
             if (validate()) {
                 addPersonalDataViewModel.addPersonalDataToDatabase(
                     username, age, jobTitle, gender
@@ -56,60 +68,90 @@ class InputPersonalDataFragment : BaseFragment() {
         }
     }
 
+    /**
+     * Observes LiveData from the ViewModel
+     */
     private fun setupObservers() {
-        addPersonalDataViewModel.viewState.observe(
-            viewLifecycleOwner,
-            ::handleViewState
-        )  // Observe loading/error states
-        addPersonalDataViewModel.personalData.observe(viewLifecycleOwner) {
-            val bundle = Bundle()
-            bundle.putInt("PersonalId", it.toDateModel().id)
-            findNavController().customNavigate(R.id.SecondFragment, bundle)
+        // Observe ViewState to handle loading and error states
+        addPersonalDataViewModel.viewState.observe(viewLifecycleOwner, ::handleViewState)
+
+        // Observe personalData to navigate to the second fragment upon successful data addition
+        addPersonalDataViewModel.personalData.observe(viewLifecycleOwner) { personalData ->
+            val bundle = Bundle().apply {
+                putInt("PersonalId", personalData.toDateModel().id)  // Pass Personal ID to the next fragment
+            }
+            findNavController().customNavigate(R.id.SecondFragment, bundle)  // Navigate to the second fragment
         }
     }
 
+    /**
+     * Handles loading, error, and network error states
+     */
     private fun handleViewState(state: LoadingErrorState) {
         when (state) {
-            LoadingErrorState.ShowLoading -> showLoading()  // Show loading spinner
-            LoadingErrorState.HideLoading -> hideLoading()  // Hide loading spinner
-            is LoadingErrorState.ShowError -> showToast(state.error.message)  // Show error message
-            is LoadingErrorState.ShowNetworkError -> showToast(getString(R.string.network_error))  // Show network error message
+            LoadingErrorState.ShowLoading -> {
+                showLoading()  // Show loading spinner when data is being processed
+            }
+            LoadingErrorState.HideLoading -> {
+                hideLoading()  // Hide loading spinner when processing is complete
+            }
+            is LoadingErrorState.ShowError -> {
+                Log.d("InputPersonalDataFragment", "Error: ${state.error.message}")
+                showToast(state.error.message)  // Show an error message if something goes wrong
+            }
+            is LoadingErrorState.ShowNetworkError -> {
+                showToast(getString(R.string.network_error))  // Show network error message
+            }
         }
     }
 
+    /**
+     * Validates the input fields
+     * @return true if all inputs are valid, false otherwise
+     */
     private fun validate(): Boolean {
         var isValid = true
 
+        // Retrieve and trim inputs
         username = binding.edtUsername.text.toString().trim()
         age = binding.edtAge.text.toString().trim()
         jobTitle = binding.edtJobTitle.text.toString().trim()
 
+        // Get selected gender
         val selectedGenderId = binding.genderRadioGroup.checkedRadioButtonId
-        val selectedRadioButton =
-            binding.genderRadioGroup.findViewById<RadioButton>(selectedGenderId)
+        val selectedRadioButton = binding.genderRadioGroup.findViewById<RadioButton>(selectedGenderId)
         gender = selectedRadioButton?.text.toString()
 
-
+        // Validate username
         if (username.isEmpty()) {
             binding.edtUsername.error = getString(R.string.required)
             isValid = false
         }
+
+        // Validate age
         if (age.isEmpty()) {
             binding.edtAge.error = getString(R.string.required)
             isValid = false
         }
+
+        // Validate job title
         if (jobTitle.isEmpty()) {
             binding.edtJobTitle.error = getString(R.string.required)
             isValid = false
         }
 
+        // Validate gender
         if (selectedGenderId == -1) {
             showToast(getString(R.string.please_select_your_gender))
             isValid = false
         }
+
         return isValid
     }
 
+    /**
+     * Cleans up the binding to prevent memory leaks
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

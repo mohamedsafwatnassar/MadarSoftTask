@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.madarsoft.android_task.data.mapper.PersonalDataMapper.toDateModel
 import com.madarsoft.android_task.domain.model.PersonalData
-import com.madarsoft.android_task.domain.usecase.FetchPersonalDatUseCase
 import com.madarsoft.android_task.domain.usecase.InsertPersonalDataUseCase
 import com.madarsoft.android_task.presentation.base.BaseViewModel
 import com.madarsoft.android_task.util.DataState
@@ -16,16 +15,26 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
+/**
+ * ViewModel responsible for adding personal data to the database and managing its UI state.
+ * @param insertPersonalDataUseCase The use case for inserting personal data into the local database.
+ */
 @HiltViewModel
 class AddPersonalDataViewModel @Inject constructor(
     private val insertPersonalDataUseCase: InsertPersonalDataUseCase,
-    private val fetchPersonalDatUseCase: FetchPersonalDatUseCase
 ) : BaseViewModel() {
 
+    // LiveData to expose personal data to the UI layer
     private val _personalData = MutableLiveData<PersonalData>()
     val personalData: LiveData<PersonalData> = _personalData
 
+    /**
+     * Adds personal data to the database.
+     * @param username The user's name.
+     * @param age The user's age.
+     * @param jobTitle The user's job title.
+     * @param gender The user's gender.
+     */
     fun addPersonalDataToDatabase(
         username: String,
         age: String,
@@ -34,6 +43,7 @@ class AddPersonalDataViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
+                // Invoke the use case to add personal data and collect the resulting Flow
                 val call = insertPersonalDataUseCase.addPersonalDataToDatabase(
                     username,
                     age,
@@ -41,41 +51,49 @@ class AddPersonalDataViewModel @Inject constructor(
                     gender
                 )
 
-                call.collect {
-                    handleDataState(it)
+                // Collect and handle emitted data states
+                call.collect { dataState ->
+                    handleDataState(dataState)
                 }
             } catch (e: Exception) {
-                // Handle any exceptions and post the error message to _viewState
-                _viewState.postValue(LoadingErrorState.ShowError(CustomError(e.localizedMessage.toString())))
+                // Handle unexpected exceptions and notify the UI of the error
+                _viewState.postValue(
+                    LoadingErrorState.ShowError(CustomError(e.localizedMessage ?: "An unknown error occurred"))
+                )
             }
         }
     }
 
+    /**
+     * Handles different states of data emitted by the use case.
+     * @param dataState The current state of the data (success, error, loading, etc.).
+     */
     private fun handleDataState(dataState: DataState<PersonalData>) {
         when (dataState) {
             is DataState.Success -> {
-                // On success, update the LiveData with the grouped movies data
-                Log.d("PersonalData222", "Personal Data ${dataState.data.toDateModel()}")
-                _personalData.postValue(dataState.data)
+                // On success, update the LiveData with the fetched personal data
+                val personalData = dataState.data
+                _personalData.postValue(personalData)
+                _viewState.postValue(LoadingErrorState.HideLoading)
             }
 
             is DataState.Error -> {
-                // Handle error state, post the error message to _viewState
+                // On error, update the UI with the error message
                 _viewState.postValue(LoadingErrorState.ShowError(dataState.error))
             }
 
             DataState.Idle -> {
-                // Hide loading state when idle (no data loading in progress)
+                // When idle, clear the loading state
                 _viewState.postValue(LoadingErrorState.HideLoading)
             }
 
             DataState.Processing -> {
-                // Show loading state when data is being processed
+                // When processing, show the loading spinner
                 _viewState.postValue(LoadingErrorState.ShowLoading)
             }
 
             DataState.ServerError -> {
-                // Handle server error state if necessary (show a network error)
+                // Handle server errors with a generic network error message
                 _viewState.postValue(LoadingErrorState.ShowNetworkError)
             }
         }

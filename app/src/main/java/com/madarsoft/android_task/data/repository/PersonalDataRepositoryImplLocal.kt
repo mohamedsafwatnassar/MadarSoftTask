@@ -24,8 +24,13 @@ class PersonalDataRepositoryImplLocal @Inject constructor(
 
     override suspend fun fetchPersonalDataByIdFromLocal(id: Int): Flow<DataState<PersonalData>> {
         return performDatabaseCall {
-            // Fetch personal data by ID and map it to the domain model
-            personalDataDao.fetchPersonalDataById(id).toDomainModel()
+            val personalData = personalDataDao.fetchPersonalDataById(id)
+            if (personalData != null) {
+                personalData.toDomainModel()
+            } else {
+                // Handle null case (e.g., return an error state)
+                throw NullPointerException("PersonalData not found for ID: $id")
+            }
         }
     }
 }

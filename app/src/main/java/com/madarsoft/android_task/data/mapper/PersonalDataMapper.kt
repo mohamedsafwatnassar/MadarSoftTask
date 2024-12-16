@@ -17,6 +17,7 @@ object PersonalDataMapper {
 
     fun PersonalData.toDateModel(): PersonalDataEntity {
         return PersonalDataEntity(
+            id = this.id,
             username = this.username,
             age = this.age,
             jobTitle = this.jobTitle,
