@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.madarsoft.android_task.data.local.dao.PersonalDataDao
 import com.madarsoft.android_task.data.local.entity.PersonalDataEntity
 
-@Database(entities = [PersonalDataEntity::class], version = 2, exportSchema = false)
+@Database(entities = [PersonalDataEntity::class], version = 4, exportSchema = false)
 abstract class PersonalDataDatabase : RoomDatabase() {
 
     abstract fun personalDataDao(): PersonalDataDao

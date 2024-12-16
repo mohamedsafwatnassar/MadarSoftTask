@@ -7,6 +7,7 @@ object PersonalDataMapper {
 
     fun PersonalDataEntity.toDomainModel(): PersonalData {
         return PersonalData(
+            id = this.id,
             username = this.username,
             age = this.age,
             jobTitle = this.jobTitle,

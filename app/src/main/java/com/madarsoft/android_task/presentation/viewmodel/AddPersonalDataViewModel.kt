@@ -1,8 +1,10 @@
 package com.madarsoft.android_task.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.madarsoft.android_task.data.mapper.PersonalDataMapper.toDateModel
 import com.madarsoft.android_task.domain.model.PersonalData
 import com.madarsoft.android_task.domain.usecase.FetchPersonalDatUseCase
 import com.madarsoft.android_task.domain.usecase.InsertPersonalDataUseCase
@@ -38,6 +40,7 @@ class AddPersonalDataViewModel @Inject constructor(
                     jobTitle,
                     gender
                 )
+
                 call.collect {
                     handleDataState(it)
                 }
@@ -52,6 +55,7 @@ class AddPersonalDataViewModel @Inject constructor(
         when (dataState) {
             is DataState.Success -> {
                 // On success, update the LiveData with the grouped movies data
+                Log.d("PersonalData222", "Personal Data ${dataState.data.toDateModel()}")
                 _personalData.postValue(dataState.data)
             }
 

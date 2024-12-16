@@ -17,4 +17,23 @@
     </style>
 
     <style name="Theme.MadarSoftTask" parent="Base.Theme.MadarSoftTask" />
+
+    <style name="App_EditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingStart">@dimen/space_4x</item>
+        <item name="android:paddingEnd">@dimen/space_4x</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="App_ButtonStyle">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="height">@dimen/space_12x</item>
+        <item name="marginHorizontal">@dimen/space_4x</item>
+        <item name="background">@drawable/bg_btn_selector</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@drawable/bg_btn_selector</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>

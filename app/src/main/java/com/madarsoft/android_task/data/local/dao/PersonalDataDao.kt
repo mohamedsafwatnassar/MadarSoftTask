@@ -9,7 +9,7 @@ import com.madarsoft.android_task.data.local.entity.PersonalDataEntity
 @Dao
 interface PersonalDataDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insertPersonalData(personalData: PersonalDataEntity)
 
     @Query("SELECT * FROM personal_data WHERE id = :id")

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.InputPersonalDataFragment">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_10x"
+        android:text="@string/enter_your_information"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Name Input -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtUsername"
+        style="@style/App_EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_12x"
+        android:layout_marginHorizontal="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_10x"
+        android:background="@drawable/edit_text_selector"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/grey_light_disabled"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+    <!-- Age Input -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtAge"
+        style="@style/App_EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_12x"
+        android:layout_marginHorizontal="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_4x"
+        android:background="@drawable/edit_text_selector"
+        android:hint="@string/age"
+        android:inputType="number"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/grey_light_disabled"
+        app:layout_constraintTop_toBottomOf="@id/edtUsername" />
+
+    <!-- Age Input -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtJobTitle"
+        style="@style/App_EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_12x"
+        android:layout_marginHorizontal="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_4x"
+        android:background="@drawable/edit_text_selector"
+        android:hint="@string/job_title"
+        android:inputType="text"
+        android:textAlignment="viewStart"
+        android:textColorHint="@color/grey_light_disabled"
+        app:layout_constraintTop_toBottomOf="@id/edtAge" />
+
+    <!-- Gender Selection -->
+    <TextView
+        android:id="@+id/genderLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_4x"
+        android:text="@string/gender"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtJobTitle" />
+
+    <RadioGroup
+        android:id="@+id/genderRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_2x"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/genderLabel">
+
+        <RadioButton
+            android:id="@+id/maleRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male" />
+
+        <RadioButton
+            android:id="@+id/femaleRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/female" />
+
+        <RadioButton
+            android:id="@+id/otherRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/other" />
+    </RadioGroup>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/btnSubmit"
+        style="@style/App_ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_6x"
+        android:background="@drawable/bg_btn_selector"
+        android:textColor="@drawable/bg_btn_selector"
+        android:text="@string/submit"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/genderRadioGroup" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

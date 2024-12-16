@@ -6,4 +6,16 @@
     <string name="previous">Previous</string>
     <string name="save">Save</string>
 
+    <string name="required">Field is required</string>
+    <string name="enter_your_information">Enter Your Information</string>
+    <string name="username">Username</string>
+    <string name="age">Age</string>
+    <string name="job_title">Job Title</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="submit">Submit</string>
+    <string name="please_select_your_gender">Please select your gender</string>
+    <string name="network_error">Network error</string>
 </resources>

@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.madarsoft.android_task.presentation.FirstFragment"
+        android:name="com.madarsoft.android_task.presentation.InputPersonalDataFragment"
         android:label=" "
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_input_personal_data">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
