@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".presentation.SecondFragment">
+    tools:context=".presentation.getPersonalData.view.GetPersonalDataFragment">
 
     <!-- Username Section -->
     <TextView

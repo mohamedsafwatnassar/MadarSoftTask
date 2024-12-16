@@ -18,4 +18,5 @@
     <string name="submit">Submit</string>
     <string name="please_select_your_gender">Please select your gender</string>
     <string name="network_error">Network error</string>
+    <string name="name">Name: %1$s</string>
 </resources>

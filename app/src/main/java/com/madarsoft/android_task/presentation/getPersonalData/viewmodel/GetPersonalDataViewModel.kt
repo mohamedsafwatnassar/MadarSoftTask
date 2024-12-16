@@ -1,4 +1,4 @@
-package com.madarsoft.android_task.presentation
+package com.madarsoft.android_task.presentation.getPersonalData.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

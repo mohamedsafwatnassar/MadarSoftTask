@@ -1,7 +1,6 @@
-package com.madarsoft.android_task.presentation
+package com.madarsoft.android_task.presentation.inputPersonalData.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.madarsoft.android_task.R
 import com.madarsoft.android_task.data.mapper.PersonalDataMapper.toDateModel
 import com.madarsoft.android_task.databinding.FragmentInputPersonalDataBinding
 import com.madarsoft.android_task.presentation.base.BaseFragment
-import com.madarsoft.android_task.presentation.viewmodel.AddPersonalDataViewModel
+import com.madarsoft.android_task.presentation.inputPersonalData.viewmodel.AddPersonalDataViewModel
 import com.madarsoft.android_task.util.LoadingErrorState
 import com.madarsoft.android_task.util.extention.customNavigate
 import com.madarsoft.android_task.util.extention.onDebouncedListener
@@ -78,9 +77,15 @@ class InputPersonalDataFragment : BaseFragment() {
         // Observe personalData to navigate to the second fragment upon successful data addition
         addPersonalDataViewModel.personalData.observe(viewLifecycleOwner) { personalData ->
             val bundle = Bundle().apply {
-                putInt("PersonalId", personalData.toDateModel().id)  // Pass Personal ID to the next fragment
+                putInt(
+                    "PersonalId",
+                    personalData.toDateModel().id
+                )  // Pass Personal ID to the next fragment
             }
-            findNavController().customNavigate(R.id.SecondFragment, bundle)  // Navigate to the second fragment
+            findNavController().customNavigate(
+                R.id.SecondFragment,
+                bundle
+            )  // Navigate to the second fragment
         }
     }
 
@@ -89,19 +94,11 @@ class InputPersonalDataFragment : BaseFragment() {
      */
     private fun handleViewState(state: LoadingErrorState) {
         when (state) {
-            LoadingErrorState.ShowLoading -> {
-                showLoading()  // Show loading spinner when data is being processed
-            }
-            LoadingErrorState.HideLoading -> {
-                hideLoading()  // Hide loading spinner when processing is complete
-            }
-            is LoadingErrorState.ShowError -> {
-                Log.d("InputPersonalDataFragment", "Error: ${state.error.message}")
-                showToast(state.error.message)  // Show an error message if something goes wrong
-            }
-            is LoadingErrorState.ShowNetworkError -> {
-                showToast(getString(R.string.network_error))  // Show network error message
-            }
+            LoadingErrorState.ShowLoading -> showLoading()  // Show loading spinner when data is being processed
+            LoadingErrorState.HideLoading -> hideLoading()  // Hide loading spinner when processing is complete
+            is LoadingErrorState.ShowError -> showToast(state.error.message)  // Show an error message if something goes wrong
+            is LoadingErrorState.ShowNetworkError -> showToast(getString(R.string.network_error))  // Show network error message
+
         }
     }
 
@@ -119,7 +116,8 @@ class InputPersonalDataFragment : BaseFragment() {
 
         // Get selected gender
         val selectedGenderId = binding.genderRadioGroup.checkedRadioButtonId
-        val selectedRadioButton = binding.genderRadioGroup.findViewById<RadioButton>(selectedGenderId)
+        val selectedRadioButton =
+            binding.genderRadioGroup.findViewById<RadioButton>(selectedGenderId)
         gender = selectedRadioButton?.text.toString()
 
         // Validate username
