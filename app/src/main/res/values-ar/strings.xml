@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MadarSoft</string>
+    <string name="action_settings">الإعدادات</string>
+
+    <string name="next">التالي</string>
+    <string name="previous">السابق</string>
+    <string name="save">حفظ</string>
+
+    <string name="required">هذا الحقل مطلوب</string>
+    <string name="enter_your_information">أدخل معلوماتك</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="age">العمر</string>
+    <string name="job_title">المسمى الوظيفي</string>
+    <string name="gender">الجنس</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="other">آخر</string>
+    <string name="submit">إرسال</string>
+    <string name="please_select_your_gender">يرجى اختيار الجنس</string>
+    <string name="network_error">خطأ في الشبكة</string>
+    <string name="name">الاسم: %1$s</string>
+
+</resources>

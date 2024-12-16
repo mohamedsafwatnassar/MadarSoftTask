@@ -83,7 +83,7 @@ class InputPersonalDataFragment : BaseFragment() {
                 )  // Pass Personal ID to the next fragment
             }
             findNavController().customNavigate(
-                R.id.SecondFragment,
+                R.id.GetPersonalDataFragment,
                 bundle
             )  // Navigate to the second fragment
         }

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.madarsoft.android_task.R
-import com.madarsoft.android_task.databinding.FragmentSecondBinding
+import com.madarsoft.android_task.databinding.FragmentGetPersonalDataBinding
 import com.madarsoft.android_task.domain.model.PersonalData
 import com.madarsoft.android_task.presentation.base.BaseFragment
 import com.madarsoft.android_task.presentation.getPersonalData.viewmodel.GetPersonalDataViewModel
@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class GetPersonalDataFragment : BaseFragment() {
 
     // Binding for the fragment's layout views
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentGetPersonalDataBinding? = null
     private val binding get() = _binding!!  // Non-nullable binding access
 
     // ViewModel for fetching personal data
@@ -33,7 +33,7 @@ class GetPersonalDataFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the fragment's layout and return the root view
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentGetPersonalDataBinding.inflate(inflater, container, false)
         return binding.root
     }
 
